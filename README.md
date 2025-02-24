@@ -26,7 +26,7 @@ PRIMARY:   100
 SECONDARY: 90
 ```
 ### Note down your IP & Interface on which Pihole is listening for DNS queries
-This needs to be done on all Piholes, we will use the IPs in the keepalived configuration
+This needs to be done on all Piholes, we will use the IPs & interfaces in the keepalived configuration
 ```
 ip a
 ```
@@ -41,7 +41,7 @@ sudo apt install keepalived
 ```
 
 ## 2. Primary node
-Configuration can be very simple, we can just configure keepalived to failover only in case "PRIMARY" Pihole is down or set advanced tracking to track the state of PORTs for DNS and UNBOUND
+Configuration can be very simple, we can just configure keepalived to failover only in case "PRIMARY" Pihole is down or set advanced tracking to track the state of PORTs for DNS and UNBOUND.
 
 ### Primary node - Basic Config
 This configuration, will failover only in case the "PRIMARY" Pihole will be down e.g the IP of the "PRIMARY" Pihole is not reachable
@@ -60,7 +60,7 @@ vrrp_instance pihole {
 }
 ```
 #### Primary node - Adding DNS port Tracking
-We can utilise the script function in keepalived config to track the state of a port, in this case the DNS UDP port 53. We use the IP local to the Pihole.
+We can utilise the script function in keepalived config to track the state of a port, in this case the DNS UDP port 53. We use the IP local to the Pihole
 ```
 global_defs {
     script_user root
@@ -73,7 +73,7 @@ vrrp_script dns_udp {
 }
 ```
 #### Primary node - Adding UNBOUND port Tracking
-We can do the same for UNBOUND if its used together with Pihole. We use the IP local to the Pihole's UNBOUND.
+We can do the same for UNBOUND if its used together with Pihole. We use the IP local to the Pihole's UNBOUND
 ```
 vrrp_script dns_udp_unbound {
     script "nc -zvu 127.0.0.1 5335"
@@ -123,6 +123,7 @@ vrrp_instance pihole {
 Follows the configuration of the Primary with adjusted lower priority. Here is no need to configure advanced tracking, as it is designed to be "SECONDARY". In case of 2+ node Cluster, you would configure advanced tracking on "SECONDARY" node and all subsequent nodes except the last one.
 
 ### Secondary node - Basic Config
+This configuration makes the "SECONDARY" as BACKUP, it will became "MASTER" only in case the "PRIMARY" fail, e.g "PRIMARY" will announce lower priority than has the BACKUP
 ```
 vrrp_instance pihole {
         interface eth0
@@ -139,7 +140,7 @@ vrrp_instance pihole {
 ```
 
 #### Secondary node - Full config with DNS & Unbound port tracking
-This is how keepalived config looks with advanced tracking for DNS as well UNBOUND Port in case the 2+ node Cluster.
+This is how keepalived config looks with advanced tracking for DNS as well UNBOUND Port in case the 2+ node Cluster
 ```
 global_defs {
     script_user root
