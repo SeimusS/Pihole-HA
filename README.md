@@ -20,7 +20,7 @@ PRIMARY:   192.168.1.1/24
 SECONDARY: 192.168.1.2/24
 VIP:       192.168.1.3/24
 ```
-Assuming following VRRP prioprities. HIGHER Priority = HIGHER precendence to become "PRIMARY"
+Assuming following VRRP prioprities. HIGHER Priority = HIGHER precendence to become "MASTER"
 ```
 PRIMARY:   100
 SECONDARY: 90
