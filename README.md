@@ -46,6 +46,11 @@ Configuration can be very simple, we can just configure keepalived to failover o
 ### Primary node - Basic Config
 This configuration, will failover only in case the "PRIMARY" Pihole will be down e.g the IP of the "PRIMARY" Pihole is not reachable
 ```
+global_defs {
+    script_user root
+    enable_script_security
+}
+
 vrrp_instance pihole {
         interface eth0
         state MASTER
