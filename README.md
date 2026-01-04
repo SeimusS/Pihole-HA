@@ -125,6 +125,11 @@ Follows the configuration of the Primary with adjusted lower priority. Here is n
 ### Secondary node - Basic Config
 This configuration makes the "SECONDARY" as BACKUP, it will became "MASTER" only in case the "PRIMARY" fail, e.g "PRIMARY" will announce lower priority than has the BACKUP
 ```
+global_defs {
+    script_user root
+    enable_script_security
+}
+
 vrrp_instance pihole {
         interface eth0
         state BACKUP
